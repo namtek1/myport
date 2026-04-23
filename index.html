@@ -1,1 +1,261 @@
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>Portfolio</title>  <style>  
+:root {  
+    --orange: #ff7a00;  
+    --dark-navy: #0a192f;  
+    --white: #ffffff;  
+}  
+  
+/* RESET */  
+* {  
+    margin: 0;  
+    padding: 0;  
+    box-sizing: border-box;  
+    font-family: Arial, sans-serif;  
+}  
+  
+body {  
+    display: flex;  
+    min-height: 100vh;  
+}  
+  
+/* GREETING */  
+#greeting {  
+    position: fixed;  
+    width: 100%;  
+    height: 100%;  
+    background: var(--dark-navy);  
+    color: var(--orange);  
+    display: flex;  
+    justify-content: center;  
+    align-items: center;  
+    font-size: 3rem;  
+    z-index: 100;  
+    animation: dropIn 1s ease;  
+}  
+  
+@keyframes dropIn {  
+    from { transform: translateY(-150px); opacity: 0; }  
+    to { transform: translateY(0); opacity: 1; }  
+}  
+  
+/* SIDEBAR */  
+.menu-container {  
+    background: var(--dark-navy);  
+    width: 80px;  
+    transition: width 0.4s ease;  
+    padding-top: 10px;  
+    overflow: hidden;  
+}  
+  
+.menu-container.active {  
+    width: 240px;  
+}  
+  
+.menu-toggle {  
+    color: var(--orange);  
+    text-align: center;  
+    padding: 15px;  
+    cursor: pointer;  
+}  
+  
+.menu {  
+    list-style: none;  
+    padding: 15px;  
+    opacity: 0;  
+    transform: translateX(-20px);  
+    transition: all 0.4s ease;  
+}  
+  
+.menu-container.active .menu {  
+    opacity: 1;  
+    transform: translateX(0);  
+}  
+  
+.menu li {  
+    margin-bottom: 15px;  
+}  
+  
+.menu li a {  
+    display: block;  
+    text-decoration: none;  
+    color: var(--orange);  
+    padding: 12px;  
+    border: 1px solid var(--orange);  
+    border-radius: 8px;  
+    text-align: center;  
+    transition: 0.3s;  
+}  
+  
+.menu li a:hover {  
+    background: var(--orange);  
+    color: var(--white);  
+}  
+  
+/* MAIN */  
+.main {  
+    flex: 1;  
+    background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f') no-repeat center/cover;  
+    display: flex;  
+    justify-content: center;  
+    align-items: center;  
+    text-align: center;  
+    padding: 40px 20px;  
+}  
+  
+.content {  
+    max-width: 600px;  
+    color: var(--white);  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}  
+  
+/* NAME (Typing) */  
+.name {  
+    font-size: 3rem;  
+    color: var(--orange);  
+    margin-bottom: 10px;  
+    border-right: 3px solid var(--orange);  
+    display: inline-block;  
+    padding-right: 5px;  
+    animation: blink 0.7s infinite; 
+    text-align: center;    
+}  
+  
+@keyframes blink {  
+    50% { border-color: transparent; }  
+}  
+  
+/* IMAGE */  
+.profile-img {  
+    width: 180px;  
+    height: 180px;  
+    border-radius: 50%;  
+    border: 5px solid var(--orange);  
+    object-fit: cover;  
+    margin: 0 auto;  
+}  
+  
+/* INTRO */  
+.intro {  
+    background: rgba(10, 25, 47, 0.85);  
+    padding: 20px;  
+    border-radius: 10px;  
+    border: 1px solid var(--orange);  
+    opacity: 0;  
+    transform: translateY(30px);  
+    animation: fadeUp 1s ease forwards;  
+    animation-delay: 4s;  
+}  
+  
+@keyframes fadeUp {  
+    to {  
+        opacity: 1;  
+        transform: translateY(0);  
+    }  
+}  
+  
+/* FOOTER */  
+footer {  
+    position: fixed;  
+    bottom: 10px;  
+    width: 100%;  
+    text-align: center;  
+    color: var(--white);  
+    font-size: 14px;  
+}  
+  
+/* RESPONSIVE */  
+@media (max-width: 768px) {  
+    body {  
+        flex-direction: column;  
+    }  
+  
+    .menu-container {  
+        width: 100%;  
+    }  
+  
+    .menu-container.active {  
+        width: 100%;  
+    }  
+  
+    .name {  
+        font-size: 2rem;  
+    }  
+  
+    .profile-img {  
+        width: 170px;  
+        height: 200px;  
+    }  
+}  
+</style>  </head>  <body>  <!-- GREETING -->  <div id="greeting">Hello Buddy! <br><br> Welcome to my page...</div>  <!-- SIDEBAR -->  <div class="menu-container" id="menuBox">  
+    <div class="menu-toggle" onclick="toggleMenu()"><b>Touch Me</b></div>  
+    <ul class="menu">  
+        <li><a href="about.html">About Me</a></li>  
+        <li><a href="experience.html">Experience</a></li>  
+        <li><a href="projects.html">Projects</a></li>  
+        <li><a href="contact.html">Contact Me</a></li>  
+        <li><a href="hobby.html">Hobbies</a></li>  
+        <li><a href="bizme">Business Ventures</a></li>  
+        <li><a href='secureme.html'>SecPort</a></li>
+    </ul>  
+</div>  <!-- MAIN -->  <div class="main" id="mainContent" style="display:none;">  
+    <div class="content">  
+        <h1 class="name" id="typingName"></h1>  <img src="nam.jpg" class="profile-img">  
 
+    <div class="intro">  
+        <p>  
+            Hello there,
+            I'm a professional Computer Scientist specialized in software development, graphic design and statistical data analysis.
+            As well, I am a cybersecurity enthusiast and Computing Tutor, Medical Passionate and Law student enthusiast.
+            Founder of <a href="allsparksolutions.netlify.app"><b>AllSpark Solutions</b></a> and Co-founder of the <a href="#"><b>Smartlearn E-Learning Platform</b></a>. Experienced in leading diverse projects and freelancing.
+        </p>  
+    </div>  
+</div>
+
+</div>  <!-- FOOTER -->  <footer>  
+    © <span id="year"></span> Horintechie™ All Rights Reserved 
+</footer>  <script>  
+// Greeting → then start typing  
+setTimeout(() => {  
+    document.getElementById("greeting").style.display = "none";  
+    document.getElementById("mainContent").style.display = "flex";  
+    startTyping();  
+}, 2500);  
+  
+// Auto year  
+document.getElementById("year").textContent = new Date().getFullYear();  
+  
+// Toggle menu  
+function toggleMenu() {  
+    document.getElementById("menuBox").classList.toggle("active");  
+}  
+  
+// ===== WORKING TYPING EFFECT =====  
+const text = "M. A. Nyabwari";  
+let index = 0;  
+  
+function startTyping() {  
+    const element = document.getElementById("typingName");  
+    element.innerHTML = "";  
+    index = 0;  
+  
+    function type() {  
+        if (index < text.length) {  
+            element.innerHTML += text.charAt(index);  
+            index++;  
+            setTimeout(type, 100);  
+        }  
+    }  
+  
+    type();  
+}  
+</script>  </body>  
+  </html>
+  
