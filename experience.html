@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills & Experience</title>
+
+<style>
+:root {
+    --dark-navy: #0a192f;
+    --orange: #ff7a00;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: var(--dark-navy);
+    color: var(--white);
+    min-height: 100vh;
+}
+
+/* TOP BAR */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+}
+
+.top-bar a {
+    color: var(--white);
+    text-decoration: none;
+    border: 1px solid var(--white);
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.top-bar a:hover {
+    background: var(--white);
+    color: var(--dark-navy);
+}
+
+/* CENTER LAYOUT */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 15px;
+    gap: 30px;
+}
+
+h1 {
+    color: var(--orange);
+}
+
+/* ================= PIE CHART ================= */
+.pie-wrapper {
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: conic-gradient(
+        #ff7a00 0% 25%,   /* HTML */
+        #4caf50 25% 45%,  /* CSS */
+        #2196f3 45% 65%,  /* JS */
+        #9c27b0 65% 85%,  /* PHP */
+        #ff9800 85% 100%  /* MySQL */
+    );
+    position: relative;
+    animation: rotateIn 1.5s ease;
+}
+
+/* INNER CUT (DONUT STYLE) */
+.pie-wrapper::before {
+    content: "";
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    background: var(--dark-navy);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* CENTER TEXT */
+.center-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.center-text h2 {
+    font-size: 18px;
+    color: var(--white);
+}
+
+.center-text p {
+    font-size: 14px;
+    color: var(--orange);
+}
+
+/* LEGEND */
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.color-box {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+}
+
+/* EXPERIENCE */
+.timeline {
+    width: 100%;
+    max-width: 800px;
+    position: relative;
+}
+
+.timeline::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background: var(--orange);
+    transform: translateX(-50%);
+}
+
+.entry {
+    width: 50%;
+    padding: 20px;
+    position: relative;
+}
+
+.entry h3 {
+    color: var(--orange);
+}
+
+.entry.left {
+    left: 0;
+    text-align: right;
+}
+
+.entry.right {
+    left: 50%;
+}
+
+.entry::before {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: var(--orange);
+    border-radius: 50%;
+    top: 25px;
+}
+
+.entry.left::before {
+    right: -6px;
+}
+
+.entry.right::before {
+    left: -6px;
+}
+
+/* ANIMATION */
+@keyframes rotateIn {
+    from {
+        transform: scale(0.5) rotate(-180deg);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 15px;
+    border-top: 2px solid var(--orange);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .timeline::before {
+        left: 10px;
+    }
+
+    .entry {
+        width: 100%;
+        padding-left: 40px;
+        text-align: left !important;
+    }
+
+    .entry.left,
+    .entry.right {
+        left: 0;
+    }
+
+    .entry::before {
+        left: 0;
+    }
+
+    .pie-wrapper {
+        width: 220px;
+        height: 220px;
+    }
+
+    .pie-wrapper::before {
+        width: 140px;
+        height: 140px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOP -->
+<div class="top-bar">
+    <a href="index.html">← Home</a>
+    <a href="about.html">About →</a>
+</div>
+
+<div class="container">
+
+<h1>Skills</h1>
+
+<!-- ================= SINGLE PIE CHART ================= -->
+<div class="pie-wrapper">
+
+    <div class="center-text">
+        <h2>My Skills</h2>
+        <p>Amos</p>
+    </div>
+
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+
+    <div class="legend-item">
+        <div class="color-box" style="background:#ff7a00"></div> Statistical Data Analysis
+    </div>
+
+    <div class="legend-item">
+        <div class="color-box" style="background:#4caf50"></div> Programming - R and Python
+    </div>
+
+    <div class="legend-item">
+        <div class="color-box" style="background:#2196f3"></div> Full-stack Development
+    </div>
+    
+    <div class="legend-item">
+        <div class="color-box" style="background:#9c27b0"></div> Graphic Design
+    </div>
+
+    <div class="legend-item">
+        <div class="color-box" style="background:#ff9800"></div> Computer Networking
+    </div>
+
+</div>
+
+<!-- EXPERIENCE -->
+<div class="timeline">
+
+    <div class="entry left">
+        <h3>2024</h3>
+        <p>Graphic Design </p>
+    </div>
+
+    <div class="entry right">
+        <h3>2025</h3>
+        <p>Advanced into full-stack development and UI design</p>
+    </div>
+
+    <div class="entry left">
+        <h3>2026</h3>
+        <p>Implementing real-world systems that provide quick and reliable solutions</p>
+    </div>
+
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+    © <span id="year"></span> Horinetechie™ All Rights Reserved
+</footer>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Archive</title>
+
+<style>
+:root {
+    --dark: #0a192f;
+    --orange: #ff7a00;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial;
+}
+
+body {
+    background: var(--dark);
+    color: var(--white);
+}
+
+/* ================= LOGIN ================= */
+#loginPage {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-box {
+    width: 300px;
+    padding: 30px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    text-align: center;
+    animation: pop 0.5s ease;
+}
+
+.login-box h2 {
+    color: var(--orange);
+    margin-bottom: 15px;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 10px;
+    background: var(--orange);
+    border: none;
+    cursor: pointer;
+}
+
+/* ================= MAIN ================= */
+#mainPage {
+    display: none;
+    padding: 20px;
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    color: var(--orange);
+}
+
+/* YEARS GRID */
+.years {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.year-card {
+    padding: 25px;
+    text-align: center;
+    border: 1px solid var(--orange);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.4s;
+    animation: fadeUp 0.6s ease;
+}
+
+.year-card:hover {
+    background: var(--orange);
+    transform: translateY(-5px);
+}
+
+/* ================= MONTH VIEW ================= */
+#yearView {
+    display: none;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.back {
+    color: var(--orange);
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+/* MONTH GRID */
+.months {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+}
+
+.month {
+    padding: 15px;
+    border: 1px solid rgba(255,255,255,0.3);
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.month:hover {
+    background: rgba(255,122,0,0.2);
+    border-color: var(--orange);
+}
+
+/* ================= FOLDER (MONTH CONTENT) ================= */
+#monthView {
+    display: none;
+    margin-top: 20px;
+}
+
+.folder-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+/* INPUT */
+input {
+    padding: 10px;
+    margin: 5px 0;
+    width: 100%;
+}
+
+button {
+    padding: 10px;
+    background: var(--orange);
+    border: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* LINKS */
+a {
+    display: block;
+    color: var(--white);
+    text-decoration: none;
+    margin-top: 5px;
+}
+
+a:hover {
+    color: var(--orange);
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 15px;
+    border-top: 2px solid var(--orange);
+    margin-top: 20px;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes pop {
+    from {transform: scale(0.8); opacity: 0;}
+    to {transform: scale(1); opacity: 1;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="loginPage">
+    <div class="login-box">
+        <h2>Login</h2>
+        <input type="text" id="user" placeholder="Username">
+        <input type="password" id="pass" placeholder="Password">
+        <button onclick="login()">Enter</button>
+    </div>
+</div>
+
+<!-- ================= MAIN ================= -->
+<div id="mainPage">
+
+<div class="header">
+    <h1>Makori Amos Nyabwari</h1>
+    <p>Secure File Archive System</p>
+</div>
+
+<!-- YEARS -->
+<div class="years" id="years"></div>
+
+<!-- YEAR VIEW -->
+<div id="yearView">
+    <div class="back" onclick="backToYears()">← Back</div>
+    <h2 id="yearTitle"></h2>
+
+    <div class="months" id="months"></div>
+
+    <!-- MONTH CONTENT -->
+    <div id="monthView">
+        <h3 id="monthTitle"></h3>
+
+        <input type="text" id="linkInput" placeholder="Paste link here">
+        <button onclick="addLink()">Add Link</button>
+
+        <div class="folder-box" id="linksBox"></div>
+    </div>
+</div>
+
+</div>
+
+<footer>
+    © <span id="year"></span> Horinetechie™ All Rights Reserved
+</footer>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+
+/* LOGIN */
+function login() {
+    const u = document.getElementById("user").value;
+    const p = document.getElementById("pass").value;
+
+    if (u === "amoh" && p === "amoh1") {
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("mainPage").style.display = "block";
+    } else {
+        alert("Wrong credentials");
+    }
+}
+
+/* YEARS */
+const yearsContainer = document.getElementById("years");
+let currentYear = null;
+let currentMonth = null;
+
+for (let y = 2020; y <= new Date().getFullYear(); y++) {
+    let div = document.createElement("div");
+    div.className = "year-card";
+    div.innerText = y;
+    div.onclick = () => openYear(y);
+    yearsContainer.appendChild(div);
+}
+
+/* OPEN YEAR */
+function openYear(year) {
+    currentYear = year;
+
+    document.getElementById("years").style.display = "none";
+    document.getElementById("yearView").style.display = "block";
+    document.getElementById("yearTitle").innerText = "Year " + year;
+
+    renderMonths();
+}
+
+/* BACK */
+function backToYears() {
+    document.getElementById("years").style.display = "grid";
+    document.getElementById("yearView").style.display = "none";
+    document.getElementById("monthView").style.display = "none";
+}
+
+/* MONTHS */
+const months = [
+    "Jan","Feb","Mar","Apr","May","Jun",
+    "Jul","Aug","Sep","Oct","Nov","Dec"
+];
+
+function renderMonths() {
+    const container = document.getElementById("months");
+    container.innerHTML = "";
+
+    months.forEach(m => {
+        let div = document.createElement("div");
+        div.className = "month";
+        div.innerText = m;
+        div.onclick = () => openMonth(m);
+        container.appendChild(div);
+    });
+}
+
+/* OPEN MONTH */
+function openMonth(month) {
+    currentMonth = month;
+    document.getElementById("monthView").style.display = "block";
+    document.getElementById("monthTitle").innerText =
+        currentYear + " / " + month;
+
+    loadLinks();
+}
+
+/* LINKS STORAGE */
+let data = JSON.parse(localStorage.getItem("archive")) || {};
+
+/* ADD LINK */
+function addLink() {
+    let link = document.getElementById("linkInput").value;
+    if (!link) return;
+
+    if (!data[currentYear]) data[currentYear] = {};
+    if (!data[currentYear][currentMonth]) data[currentYear][currentMonth] = [];
+
+    data[currentYear][currentMonth].push(link);
+
+    document.getElementById("linkInput").value = "";
+    save();
+    loadLinks();
+}
+
+/* LOAD LINKS */
+function loadLinks() {
+    let box = document.getElementById("linksBox");
+    box.innerHTML = "";
+
+    let list = (data[currentYear] && data[currentYear][currentMonth]) || [];
+
+    list.forEach(l => {
+        let a = document.createElement("a");
+        a.href = l;
+        a.target = "_blank";
+        a.innerText = l;
+        box.appendChild(a);
+    });
+}
+
+/* SAVE */
+function save() {
+    localStorage.setItem("archive", JSON.stringify(data));
+}
+</script>
+
+</body>
+</html>
