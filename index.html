@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>mnyabwariamos</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ================= GLOBAL ================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#021526;
+    color:white;
+    overflow:hidden;
+    height:100vh;
+    position:relative;
+}
+
+/* ================= ANIMATED BACKGROUND ================= */
+
+.background{
+    position:fixed;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    z-index:0;
+}
+
+.bubble{
+    position:absolute;
+    bottom:-120px;
+    background:rgba(255,255,255,0.08);
+    border-radius:50%;
+    animation:float linear infinite;
+}
+
+@keyframes float{
+
+    0%{
+        transform:translateY(0) scale(1);
+        opacity:0;
+    }
+
+    30%{
+        opacity:0.4;
+    }
+
+    100%{
+        transform:translateY(-120vh) scale(1.5);
+        opacity:0;
+    }
+}
+
+/* ================= MAIN CONTAINER ================= */
+
+.container{
+    position:relative;
+    z-index:2;
+    width:100%;
+    height:calc(100vh - 60px);
+    display:flex;
+    gap:20px;
+    padding:20px;
+}
+
+/* ================= PANELS ================= */
+
+.panel{
+    background:rgba(2,21,38,0.78);
+    backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:24px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.35);
+    overflow:hidden;
+}
+
+/* ================= LEFT SECTION ================= */
+
+.left-section{
+    width:20%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:18px;
+    padding:25px;
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:20px;
+    font-size:2rem;
+    font-weight:700;
+    color:#ff7b00;
+}
+
+.left-section a{
+    text-decoration:none;
+    color:white;
+    background:rgba(255,255,255,0.05);
+    padding:16px;
+    border-radius:14px;
+    text-align:center;
+    transition:0.4s;
+    border:1px solid rgba(255,255,255,0.08);
+    font-weight:500;
+}
+
+.left-section a:hover{
+    background:#ff7b00;
+    transform:translateX(10px);
+    box-shadow:0 0 20px rgba(255,123,0,0.4);
+}
+
+/* ================= CENTER SECTION ================= */
+
+.center-section{
+    width:45%;
+    display:flex;
+}
+
+/* ================= PROFILE CARD ================= */
+
+.profile-card{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+    position:relative;
+    overflow:hidden;
+    animation:cardFloat 5s ease-in-out infinite;
+}
+
+@keyframes cardFloat{
+
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+
+    100%{
+        transform:translateY(0px);
+    }
+}
+
+/* Glow */
+
+.profile-card::before{
+    content:"";
+    position:absolute;
+    width:450px;
+    height:450px;
+    background:#ff7b00;
+    border-radius:50%;
+    filter:blur(120px);
+    opacity:0.12;
+    animation:glowPulse 4s infinite alternate;
+}
+
+@keyframes glowPulse{
+
+    from{
+        transform:scale(1);
+        opacity:0.12;
+    }
+
+    to{
+        transform:scale(1.2);
+        opacity:0.2;
+    }
+}
+
+/* ================= PROFILE CONTENT ================= */
+
+.profile-content{
+    position:relative;
+    z-index:2;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:40px;
+}
+
+/* ================= PHOTO SIDE ================= */
+
+.photo-side{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.photo-wrapper{
+    position:relative;
+    width:280px;
+    height:280px;
+    border-radius:50%;
+    padding:8px;
+    background:linear-gradient(
+        135deg,
+        #ff7b00,
+        white,
+        #ff7b00
+    );
+    animation:rotateBorder 6s linear infinite;
+    box-shadow:0 0 35px rgba(255,123,0,0.35);
+}
+
+@keyframes rotateBorder{
+
+    0%{
+        transform:rotate(0deg);
+    }
+
+    100%{
+        transform:rotate(360deg);
+    }
+}
+
+.photo-wrapper img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
+    border:6px solid #021526;
+    animation:counterRotate 6s linear infinite;
+}
+
+@keyframes counterRotate{
+
+    0%{
+        transform:rotate(0deg);
+    }
+
+    100%{
+        transform:rotate(-360deg);
+    }
+}
+
+/* ================= INTRO SIDE ================= */
+
+.intro-side{
+    flex:1.2;
+}
+
+.intro-side h1{
+    font-size:3rem;
+    color:#ff7b00;
+    margin-bottom:20px;
+    line-height:1.2;
+}
+
+.typing{
+    font-size:1.2rem;
+    margin-bottom:20px;
+    color:white;
+    min-height:40px;
+}
+
+.intro-side p{
+    color:#dddddd;
+    line-height:1.9;
+    margin-bottom:25px;
+}
+
+/* ================= BUTTONS ================= */
+
+.profile-buttons{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.profile-buttons button{
+    padding:4px 20px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    transition:0.4s;
+    font-weight:600;
+}
+
+.primary-btn{
+    background:#ff7b00;
+    color:white;
+}
+
+.primary-btn:hover{
+    background:white;
+    color:#021526;
+}
+
+/* ================= RIGHT SECTION ================= */
+
+.right-section{
+    width:35%;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+/* ================= PROJECTS ================= */
+
+.projects{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+}
+
+.project-card{
+    width:100%;
+    padding:30px;
+    border-radius:18px;
+    background:rgba(255,255,255,0.05);
+    text-align:center;
+    animation:fade 1s;
+}
+
+.project-card h2{
+    color:#ff7b00;
+    margin-bottom:15px;
+}
+
+.project-card p{
+    color:#dddddd;
+    line-height:1.7;
+}
+
+.project-btn{
+    margin-top:20px;
+    padding:12px 20px;
+    border:none;
+    border-radius:12px;
+    background:#ff7b00;
+    color:white;
+    cursor:pointer;
+    transition:0.4s;
+    font-weight:600;
+}
+
+.project-btn:hover{
+    background:white;
+    color:#021526;
+}
+
+/* ================= CONTACT ================= */
+
+.contact{
+    flex:1;
+    padding:25px;
+}
+
+.contact h2{
+    color:#ff7b00;
+    margin-bottom:20px;
+}
+
+.contact form{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.contact input,
+.contact textarea{
+    padding:8px;
+    border:none;
+    border-radius:3px;
+    background:rgba(255,255,255,0.08);
+    color:white;
+    outline:none;
+    border:1px solid rgba(255,255,255,0.1);
+}
+
+.contact textarea{
+    resize:none;
+    height:65px;
+}
+
+.contact button{
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:#ff7b00;
+    color:white;
+    cursor:pointer;
+    transition:0.4s;
+    font-weight:600;
+}
+
+.contact button:hover{
+    background:white;
+    color:#021526;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    height:60px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(2,21,38,0.92);
+    border-top:1px solid rgba(255,255,255,0.08);
+    z-index:5;
+}
+
+footer p{
+    color:white;
+    font-size:0.95rem;
+}
+
+footer span{
+    color:#ff7b00;
+}
+
+/* ================= ANIMATIONS ================= */
+
+@keyframes fade{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1200px){
+
+    .profile-content{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .intro-side h1{
+        font-size:2.2rem;
+    }
+
+    .profile-buttons{
+        justify-content:center;
+    }
+
+    .photo-wrapper{
+        width:220px;
+        height:220px;
+    }
+}
+
+@media(max-width:1000px){
+
+    body{
+        overflow:auto;
+    }
+
+    .container{
+        flex-direction:column;
+        height:auto;
+        padding-bottom:90px;
+    }
+
+    .left-section,
+    .center-section,
+    .right-section{
+        width:100%;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= BACKGROUND ================= -->
+
+<div class="background" id="background"></div>
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="container">
+
+    <!-- ================= LEFT SECTION ================= -->
+
+    <div class="panel left-section">
+
+        <div class="logo">
+            M. A. Nyabwari
+        </div>
+
+        
+        <a href="about.html">Know Me</a>
+        <a href="experience.html">Experience</a>
+        <a href="hobby.html">Hobbies</a>
+        <a href="bizme.html">Business Ventures</a>
+        <a href="#">SecDoor</a>
+
+    </div>
+
+    <!-- ================= CENTER SECTION ================= -->
+
+    <div class="center-section">
+
+        <div class="panel profile-card">
+
+            <div class="profile-content">
+
+                <!-- PHOTO -->
+
+                <div class="photo-side">
+
+                    <div class="photo-wrapper">
+
+                        <img src="amoh.wepb"
+                        alt="Profile Photo">
+
+                    </div>
+
+                </div>
+
+                <!-- INTRO -->
+
+                <div class="intro-side">
+
+                    <h1>
+                        HORIN TECHIE
+                    </h1>
+
+                    <div class="typing" id="typing"></div>
+
+                    <p>
+                        Results-driven technology professional specializing in          			architectural design, systemic optimization, and advanced 			engineering solutions. Proven expertise in transforming 			complex operational requirements into scalable, secure, 			and high-performance technical infrastructure.                       
+                    </p>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= RIGHT SECTION ================= -->
+
+    <div class="right-section">
+
+        <!-- PROJECTS -->
+
+        <div class="panel projects">
+
+            <div class="project-card" id="projectCard">
+
+                <h2>
+                    Portfolio Website
+                </h2>
+
+                <p>
+                    Responsive portfolio with modern UI animations.
+                </p>
+
+                <button class="project-btn"
+                onclick="window.location.href='proj.html'">
+
+                    View Project
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- CONTACT -->
+
+        <div class="panel contact">
+
+            <h2>
+                Contact
+            </h2>
+
+            <form id="contactForm">
+
+                <input
+                type="text"
+                id="name"
+                placeholder="Your Name"
+                required>
+
+                <input
+                type="email"
+                id="email"
+                placeholder="Your Email"
+                required>
+
+                <textarea
+                id="message"
+                placeholder="Your Message"
+                required></textarea>
+
+                <button type="submit">
+
+                    Send Message
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p id="footerText"></p>
+
+</footer>
+
+<script>
+
+/* ================= BUBBLES ================= */
+
+const background =
+document.getElementById("background");
+
+for(let i = 0; i < 50; i++){
+
+    const bubble =
+    document.createElement("div");
+
+    bubble.classList.add("bubble");
+
+    let size =
+    Math.random() * 60 + 10;
+
+    bubble.style.width =
+    size + "px";
+
+    bubble.style.height =
+    size + "px";
+
+    bubble.style.left =
+    Math.random() * 100 + "%";
+
+    bubble.style.animationDuration =
+    (Math.random() * 10 + 8) + "s";
+
+    bubble.style.animationDelay =
+    Math.random() * 5 + "s";
+
+    background.appendChild(bubble);
+}
+
+/* ================= TYPING EFFECT ================= */
+
+const typingElement =
+document.getElementById("typing");
+
+const words = [
+
+    "Creative Web Solutions",
+    "Responsive User Interfaces",
+    "Modern Frontend Experiences",
+    "Interactive Website Designs"
+
+];
+
+let wordIndex = 0;
+let charIndex = 0;
+let deleting = false;
+
+function typeEffect(){
+
+    let currentWord =
+    words[wordIndex];
+
+    if(!deleting){
+
+        typingElement.textContent =
+        currentWord.substring(0,charIndex++);
+
+        if(charIndex >
+        currentWord.length){
+
+            deleting = true;
+
+            setTimeout(typeEffect,1500);
+
+            return;
+        }
+
+    }else{
+
+        typingElement.textContent =
+        currentWord.substring(0,charIndex--);
+
+        if(charIndex < 0){
+
+            deleting = false;
+
+            wordIndex =
+            (wordIndex + 1)
+            % words.length;
+        }
+    }
+
+    setTimeout(
+        typeEffect,
+        deleting ? 60 : 120
+    );
+}
+
+typeEffect();
+
+/* ================= PROJECT ROTATOR ================= */
+
+const projectCard =
+document.getElementById("projectCard");
+
+const projects = [
+
+    {
+        title:"Portfolio Website",
+        desc:"Responsive portfolio with modern UI animations."
+    },
+
+    {
+        title:"Business Dashboard",
+        desc:"Interactive business analytics platform."
+    },
+
+    {
+        title:"E-Commerce Store",
+        desc:"Online shopping application with payment system."
+    },
+
+    {
+        title:"School Management",
+        desc:"Advanced digital student management solution."
+    }
+
+];
+
+let currentProject = 0;
+
+setInterval(() => {
+
+    currentProject =
+    (currentProject + 1)
+    % projects.length;
+
+    projectCard.innerHTML = `
+
+        <h2>
+            ${projects[currentProject].title}
+        </h2>
+
+        <p>
+            ${projects[currentProject].desc}
+        </p>
+
+        <button class="project-btn"
+        onclick="window.location.href='proj.html'">
+
+            View Project
+
+        </button>
+
+    `;
+
+},5000);
+
+/* ================= CONTACT FORM ================= */
+
+document.getElementById("contactForm")
+.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const name =
+    document.getElementById("name").value;
+
+    const email =
+    document.getElementById("email").value;
+
+    const message =
+    document.getElementById("message").value;
+
+    /* ================= WHATSAPP ================= */
+
+    const whatsappNumber =
+    "254794939065";
+
+    const whatsappMessage =
+    `Name: ${name}%0AEmail: ${email}%0AMessage: ${message}`;
+
+    const whatsappURL =
+    `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+
+    window.open(whatsappURL, "_blank");
+
+    /* ================= GMAIL ================= */
+
+    const gmailURL =
+    `https://mail.google.com/mail/?view=cm&fs=1&to=horintechie@gmail.com&su=Website Message&body=Name: ${name}%0AEmail: ${email}%0AMessage: ${message}`;
+
+    window.open(gmailURL, "_blank");
+
+});
+
+/* ================= FOOTER ================= */
+
+function updateFooter(){
+
+    const now = new Date();
+
+    const year =
+    now.getFullYear();
+
+    const time =
+    now.toLocaleTimeString();
+
+    document.getElementById(
+        "footerText"
+    ).innerHTML = `
+        © <span>${year}</span>
+        HorinTechie |
+        ${time}
+    `;
+}
+
+updateFooter();
+
+setInterval(updateFooter,1000);
+
+</script>
+
+</body>
+</html>
