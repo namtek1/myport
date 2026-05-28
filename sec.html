@@ -1,1 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>ADMIN AMOS</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ================= GLOBAL ================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:white;
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+    color:#333;
+}
+
+/* ================= ANIMATED BACKGROUND ================= */
+
+.background{
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    overflow:hidden;
+    z-index:-1;
+}
+
+.bubble{
+    position:absolute;
+    bottom:-120px;
+    background:rgba(2,21,38,0.15);
+    border-radius:50%;
+    animation:float linear infinite;
+}
+
+@keyframes float{
+
+    0%{
+        transform:translateY(0) scale(1);
+        opacity:0;
+    }
+
+    30%{
+        opacity:0.5;
+    }
+
+    100%{
+        transform:translateY(-120vh) scale(1.5);
+        opacity:0;
+    }
+}
+
+/* ================= TOP BAR ================= */
+
+.top-bar{
+    width:100%;
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:white;
+    border-bottom:2px solid #021526;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.home-btn{
+    text-decoration:none;
+    color:white;
+    background:#021526;
+    padding:12px 20px;
+    border-radius:10px;
+    font-weight:600;
+    transition:0.4s;
+}
+
+.home-btn:hover{
+    background:maroon;
+}
+
+/* ================= SEARCH ================= */
+
+.search-box{
+    width:40%;
+    display:none;
+}
+
+.search-box input{
+    width:100%;
+    padding:14px;
+    border:2px solid #021526;
+    border-radius:10px;
+    outline:none;
+    background:white;
+}
+
+/* ================= LOGIN ================= */
+
+.login-container{
+    width:100%;
+    height:80vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.login-box{
+    width:400px;
+    background:maroon;
+    border-radius:20px;
+    padding:40px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+.login-box h2{
+    text-align:center;
+    color:white;
+    margin-bottom:25px;
+}
+
+.login-box input{
+    width:100%;
+    padding:15px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:10px;
+    outline:none;
+    background:white;
+    color:#333;
+}
+
+.login-box button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#021526;
+    color:white;
+    cursor:pointer;
+    font-weight:600;
+    transition:0.4s;
+}
+
+.login-box button:hover{
+    background:white;
+    color:maroon;
+}
+
+.error{
+    color:white;
+    text-align:center;
+    margin-top:10px;
+}
+
+/* ================= STORAGE SECTION ================= */
+
+.storage-section{
+    display:none;
+    padding:25px;
+}
+
+/* ================= ADD FILE ================= */
+
+.add-file-box{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:30px;
+    border-left:8px solid #021526;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+.add-file-box h2{
+    color:#021526;
+    margin-bottom:20px;
+}
+
+.add-file-box input{
+    width:100%;
+    padding:15px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    outline:none;
+}
+
+.add-file-box button{
+    padding:14px 25px;
+    border:none;
+    border-radius:10px;
+    background:#021526;
+    color:white;
+    cursor:pointer;
+    font-weight:600;
+    transition:0.4s;
+}
+
+.add-file-box button:hover{
+    background:maroon;
+}
+
+/* ================= FILE SECTIONS ================= */
+
+.year-title{
+    margin-top:30px;
+    margin-bottom:20px;
+    color:#021526;
+    font-size:2rem;
+}
+
+.month-title{
+    margin-top:20px;
+    margin-bottom:15px;
+    font-size:1.3rem;
+    color:#444;
+}
+
+.date-title{
+    margin-top:10px;
+    margin-bottom:10px;
+    color:#666;
+}
+
+/* ================= FILE CARD ================= */
+
+.file-card{
+    background:white;
+    padding:18px;
+    border-radius:15px;
+    margin-bottom:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+    border-left:5px solid #021526;
+}
+
+.file-info{
+    flex:1;
+}
+
+.file-info a{
+    text-decoration:none;
+    color:#021526;
+    font-weight:600;
+    word-break:break-all;
+}
+
+.file-info a:hover{
+    color:maroon;
+}
+
+/* ================= ACTIONS ================= */
+
+.action-container{
+    position:relative;
+}
+
+.action-btn{
+    padding:10px 15px;
+    border:none;
+    border-radius:8px;
+    background:#021526;
+    color:white;
+    cursor:pointer;
+    transition:0.4s;
+}
+
+.action-btn:hover{
+    background:maroon;
+}
+
+.dropdown{
+    display:none;
+    position:absolute;
+    right:0;
+    top:45px;
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 5px 20px rgba(0,0,0,0.15);
+    min-width:120px;
+    z-index:100;
+}
+
+.dropdown button{
+    width:100%;
+    padding:12px;
+    border:none;
+    background:white;
+    cursor:pointer;
+    text-align:left;
+}
+
+.dropdown button:hover{
+    background:#f2f2f2;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+    width:100%;
+    text-align:center;
+    padding:20px;
+    background:#021526;
+    color:white;
+    margin-top:40px;
+}
+
+footer span{
+    font-weight:700;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:900px){
+
+    .top-bar{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .search-box{
+        width:100%;
+    }
+
+    .login-box{
+        width:90%;
+    }
+
+    .file-card{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= ANIMATED BACKGROUND ================= -->
+
+<div class="background" id="background"></div>
+
+<!-- ================= TOP BAR ================= -->
+
+<div class="top-bar">
+
+    <a href="index.html" class="home-btn">
+        ← Home
+    </a>
+
+    <div class="search-box" id="searchBox">
+
+        <input type="text"
+        id="searchInput"
+        placeholder="Search stored links...">
+
+    </div>
+
+</div>
+
+<!-- ================= LOGIN ================= -->
+
+<div class="login-container" id="loginContainer">
+
+    <div class="login-box">
+
+        <h2>
+            Admin Login
+        </h2>
+
+        <input type="text"
+        id="username"
+        placeholder="Enter Username">
+
+        <input type="password"
+        id="password"
+        placeholder="Enter Password">
+
+        <button onclick="login()">
+            Login
+        </button>
+
+        <div class="error" id="error"></div>
+
+    </div>
+
+</div>
+
+<!-- ================= STORAGE SECTION ================= -->
+
+<div class="storage-section" id="storageSection">
+
+    <!-- ADD FILE -->
+
+    <div class="add-file-box">
+
+        <h2>
+            Add New File Link
+        </h2>
+
+        <input type="text"
+        id="fileTitle"
+        placeholder="Enter File Title">
+
+        <input type="url"
+        id="fileLink"
+        placeholder="Paste File Link">
+
+        <button onclick="addFile()">
+            Save Link
+        </button>
+
+    </div>
+
+    <!-- FILE DISPLAY -->
+
+    <div id="fileContainer"></div>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    © <span id="year"></span>
+    HorizonTechie |
+    <span id="time"></span>
+
+</footer>
+
+<script>
+
+/* ================= NAVY BLUE BUBBLES ================= */
+
+const background =
+document.getElementById("background");
+
+for(let i = 0; i < 50; i++){
+
+    const bubble =
+    document.createElement("div");
+
+    bubble.classList.add("bubble");
+
+    let size =
+    Math.random() * 60 + 10;
+
+    bubble.style.width =
+    size + "px";
+
+    bubble.style.height =
+    size + "px";
+
+    bubble.style.left =
+    Math.random() * 100 + "%";
+
+    bubble.style.animationDuration =
+    (Math.random() * 10 + 8) + "s";
+
+    bubble.style.animationDelay =
+    Math.random() * 5 + "s";
+
+    background.appendChild(bubble);
+}
+
+/* ================= LOGIN DETAILS ================= */
+
+const defaultUsername = "amoh";
+const defaultPassword = "amoh34";
+
+/* ================= DYNAMIC FILE STORAGE ================= */
+
+let files = {};
+
+/* ================= LOGIN FUNCTION ================= */
+
+function login(){
+
+    const username =
+    document.getElementById("username").value;
+
+    const password =
+    document.getElementById("password").value;
+
+    if(
+        username === defaultUsername &&
+        password === defaultPassword
+    ){
+
+        document.getElementById(
+            "loginContainer"
+        ).style.display = "none";
+
+        document.getElementById(
+            "storageSection"
+        ).style.display = "block";
+
+        document.getElementById(
+            "searchBox"
+        ).style.display = "block";
+
+    }else{
+
+        document.getElementById(
+            "error"
+        ).innerText =
+        "Invalid Username or Password";
+    }
+}
+
+/* ================= ADD FILE ================= */
+
+function addFile(){
+
+    const title =
+    document.getElementById("fileTitle").value;
+
+    const link =
+    document.getElementById("fileLink").value;
+
+    if(title === "" || link === ""){
+
+        alert("Please fill all fields");
+        return;
+    }
+
+    const now = new Date();
+
+    const year =
+    now.getFullYear();
+
+    const month =
+    now.toLocaleString('default',{
+        month:'long'
+    });
+
+    const date =
+    now.getDate();
+
+    if(!files[year]){
+        files[year] = {};
+    }
+
+    if(!files[year][month]){
+        files[year][month] = {};
+    }
+
+    if(!files[year][month][date]){
+        files[year][month][date] = [];
+    }
+
+    files[year][month][date].push({
+        title,
+        link
+    });
+
+    document.getElementById(
+        "fileTitle"
+    ).value = "";
+
+    document.getElementById(
+        "fileLink"
+    ).value = "";
+
+    renderFiles();
+}
+
+/* ================= RENDER FILES ================= */
+
+function renderFiles(){
+
+    const fileContainer =
+    document.getElementById("fileContainer");
+
+    fileContainer.innerHTML = "";
+
+    for(const year in files){
+
+        fileContainer.innerHTML += `
+            <div class="year-title">
+                ${year}
+            </div>
+        `;
+
+        for(const month in files[year]){
+
+            fileContainer.innerHTML += `
+                <div class="month-title">
+                    ${month}
+                </div>
+            `;
+
+            for(const date in files[year][month]){
+
+                fileContainer.innerHTML += `
+                    <div class="date-title">
+                        Date: ${date}
+                    </div>
+                `;
+
+                files[year][month][date]
+                .forEach((file,index)=>{
+
+                    fileContainer.innerHTML += `
+
+                        <div class="file-card">
+
+                            <div class="file-info">
+
+                                <a href="${file.link}"
+                                target="_blank">
+
+                                    ${file.title}
+
+                                </a>
+
+                            </div>
+
+                            <div class="action-container">
+
+                                <button class="action-btn"
+                                onclick="toggleDropdown(this)">
+
+                                    Actions
+
+                                </button>
+
+                                <div class="dropdown">
+
+                                    <button onclick="
+                                    deleteFile(
+                                    '${year}',
+                                    '${month}',
+                                    '${date}',
+                                    ${index}
+                                    )">
+
+                                        Delete
+
+                                    </button>
+
+                                    <button onclick="
+                                    prepareAdd(
+                                    '${file.title}'
+                                    )">
+
+                                        Add
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    `;
+                });
+            }
+        }
+    }
+}
+
+/* ================= TOGGLE ACTION MENU ================= */
+
+function toggleDropdown(button){
+
+    const dropdown =
+    button.nextElementSibling;
+
+    const allDropdowns =
+    document.querySelectorAll(".dropdown");
+
+    allDropdowns.forEach(menu => {
+
+        if(menu !== dropdown){
+            menu.style.display = "none";
+        }
+    });
+
+    dropdown.style.display =
+    dropdown.style.display === "block"
+    ? "none"
+    : "block";
+}
+
+/* ================= DELETE FILE ================= */
+
+function deleteFile(year,month,date,index){
+
+    files[year][month][date]
+    .splice(index,1);
+
+    if(
+        files[year][month][date]
+        .length === 0
+    ){
+        delete files[year][month][date];
+    }
+
+    renderFiles();
+}
+
+/* ================= PREPARE ADD ================= */
+
+function prepareAdd(title){
+
+    document.getElementById(
+        "fileTitle"
+    ).value = title;
+
+    document.getElementById(
+        "fileLink"
+    ).focus();
+}
+
+/* ================= SEARCH ================= */
+
+document.getElementById(
+    "searchInput"
+).addEventListener("keyup", function(){
+
+    const value =
+    this.value.toLowerCase();
+
+    const cards =
+    document.querySelectorAll(".file-card");
+
+    cards.forEach(card => {
+
+        card.style.display =
+        card.innerText.toLowerCase()
+        .includes(value)
+        ? "flex"
+        : "none";
+    });
+});
+
+/* ================= AUTO FOOTER ================= */
+
+function updateFooter(){
+
+    const now = new Date();
+
+    document.getElementById(
+        "year"
+    ).innerText =
+    now.getFullYear();
+
+    document.getElementById(
+        "time"
+    ).innerText =
+    now.toLocaleTimeString();
+}
+
+updateFooter();
+
+setInterval(updateFooter,1000);
+
+</script>
+
+</body>
+</html>
