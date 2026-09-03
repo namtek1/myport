@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{background:#070d2a;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden}
+:root{--navy:#070d2a;--orange:#ff8a1f;--orange2:#ff6a00}
+
+/* ANIMATED BACKGROUND */
+.bg{position:fixed;inset:0;z-index:-1;background:radial-gradient(120% 85% at 12% 0%,#1b2b73 0%,#101a44 38%,#070d2a 78%)}
+.bg::before{content:'';position:absolute;inset:-40%;background:conic-gradient(from 210deg at 18% 12%,transparent 0deg,rgba(255,138,31,.07) 16deg,transparent 34deg,rgba(255,138,31,.13) 56deg,transparent 86deg);animation:spin 22s linear infinite}
+.bg::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1.2px);background-size:26px 26px;opacity:.28;animation:drift 50s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes drift{from{transform:translateY(0)}to{transform:translateY(260px)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* NAV - Home top left well styled */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:12px 24px;background:rgba(7,13,42,.78);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08)}
+.home{display:inline-flex;align-items:center;gap:10px;padding:9px 20px;border-radius:999px;background:#fff;color:#070d2a;text-decoration:none;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12.5px;box-shadow:0 6px 22px rgba(0,0,0,.24);transition:.25s;white-space:nowrap}
+.home:hover{background:var(--orange);color:#fff;transform:translateY(-1px)}
+.home .ic{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#ffb26a,#ff6a00);display:grid;place-items:center;color:#fff;font-size:11px}
+
+/* HERO - relative so photo can be anchored */
+.hero{position:relative;min-height:100vh;padding:96px 5% 160px;display:block}
+
+/* INTRO - top and from the left, transparent above background */
+.intro{position:relative;z-index:2;width:min(100%,600px);padding:28px;background:rgba(255,255,255,.06);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.11);border-radius:22px;box-shadow:0 18px 50px rgba(0,0,0,.35);animation:float 7s ease-in-out infinite}
+.eyebrow{display:flex;align-items:center;gap:8px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);margin-bottom:12px}
+.eyebrow::before{content:'';width:26px;height:2px;background:var(--orange);border-radius:99px}
+.h1{font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(28px,4vw,48px);line-height:.96;color:#fff}
+.h1 span{color:var(--orange)}
+.p{margin-top:14px;font-size:clamp(13px,1.8vw,15px);line-height:1.7;color:rgba(255,255,255,.82)}
+.p b{color:#fff}
+
+/* PHOTO - RIGHT and slightly ABOVE bottom right */
+.side{position:absolute;right:5%;bottom:110px;z-index:3;display:flex;flex-direction:column;align-items:center;gap:14px;width:min(92%,420px)}
+.frame{position:relative;width:100%;aspect-ratio:.88;border-radius:32px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.13);box-shadow:0 24px 70px rgba(0,0,0,.5)}
+.frame::after{content:'';position:absolute;inset:-1px;border-radius:inherit;padding:1.4px;background:linear-gradient(135deg,var(--orange),transparent 35%,transparent 65%,var(--orange));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.55;pointer-events:none}
+.img{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:108%;height:112%;object-fit:cover;object-position:top center}
+.shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,13,42,.88) 0%,transparent 48%);z-index:1}
+/* Name just below photo */
+.namebox{width:100%;background:rgba(255,255,255,.07);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 12px 36px rgba(0,0,0,.3)}
+.nm{font-family:'Montserrat',sans-serif;font-weight:800;font-size:18px;color:#fff}
+.rl{margin-top:3px;font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--orange);font-weight:700;display:flex;align-items:center;gap:6px}
+.rl i{width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 10px var(--orange)}
+
+/* PROJECTS LINK - centered below about */
+.cta{position:relative;z-index:2;padding:10px 5% 50px;display:flex;justify-content:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:14px 32px;border-radius:999px;background:linear-gradient(135deg,var(--orange) 0%,var(--orange2) 100%);color:#fff;text-decoration:none;font-family:'Montserrat',sans-serif;font-weight:800;font-size:14px;box-shadow:0 14px 36px rgba(255,106,0,.35);transition:.3s;width:min(100%,340px)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 20px 48px rgba(255,106,0,.5)}
+.btn .arr{width:28px;height:28px;border-radius:50%;background:#fff;color:var(--orange2);display:grid;place-items:center;font-weight:800;transition:.3s}
+.btn:hover .arr{transform:translateX(4px)}
+
+/* FOOTER - bottom center */
+.foot{position:relative;background:rgba(5,9,28,.92);border-top:1px solid rgba(255,255,255,.06);padding:26px 20px 28px;text-align:center}
+.foot-inner{max-width:900px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:8px}
+.copy{font-size:11px;color:rgba(255,255,255,.45)}
+.dot{width:4px;height:4px;border-radius:50%;background:var(--orange);display:inline-block;margin:0 7px;vertical-align:middle}
+
+/* ADAPTIVE LAYOUTS */
+@media(max-width:1100px){
+.side{right:3%;width:380px;bottom:100px}
+}
+@media(max-width:900px){
+.hero{padding-bottom:520px} /* make space for absolute photo */
+.side{right:50%;transform:translateX(50%);bottom:100px;width:min(84%,400px)}
+}
+@media(max-width:768px){
+.hero{padding:78px 16px 0;display:flex;flex-direction:column;gap:0;min-height:auto}
+.intro{order:2;width:100%;margin-top:20px;margin-bottom:20px;animation:none}
+.side{order:1;position:relative;right:auto;bottom:auto;transform:none;width:100%;max-width:380px;margin:0 auto}
+.frame{aspect-ratio:.9}
+.cta{padding:10px 16px 30px}
+}
+@media(max-width:480px){
+.nav{padding:10px 12px}
+.side{max-width:100%}
+.frame{width:100%;border-radius:26px}
+.namebox{padding:12px 16px}
+.btn{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<nav class="nav">
+<a href="index.html" class="home"><span class="ic">⌂</span> Home</a>
+<div style="font-family:'Montserrat';font-weight:700;font-size:11px;color:rgba(255,255,255,.6)">ABOUT</div>
+</nav>
+
+<main class="hero">
+<!-- INTRO top left transparent -->
+<section class="intro">
+<div class="eyebrow">About Me</div>
+<h1 class="h1">Building <span>digital</span><br>products that<br>people love.</h1>
+<p class="p">I'm <b>Amos Nyabwari</b> — an <b>experienced Computing Proffessional</b>. I possess hands-on skill in Tutoring Computing discplines, high quality software development, Cybersecurity and Robotics. Founder of <a href="horizontechie.vercel.app"><b>Horizon Technologies</b></a> Law Student and Medical Enthusiast</p>
+</section>
+
+<!-- PHOTO right slightly above bottom right -->
+<aside class="side">
+<div class="frame">
+<img class="img" src="nyabwari.jpg" alt="Your photo" onerror="this.src='https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=640&q=80&auto=format&fit=crop'">
+<div class="shade"></div>
+</div>
+<div class="namebox">
+<div>
+<div class="nm">M. A. Nyabwari</div>
+<div class="rl"><i></i>Computing Specialist</div>
+</div>
+<div style="width:36px;height:36px;border-radius:50%;background:var(--orange);display:grid;place-items:center;color:#fff;font-weight:800">→</div>
+</div>
+</aside>
+</main>
+
+<div class="cta">
+<a href="projects.html" class="btn">View My Projects <span class="arr">→</span></a>
+</div>
+
+<footer class="foot">
+<div class="foot-inner">
+<div style="font-family:'Montserrat';font-weight:800;font-size:12px;letter-spacing:.08em;color:#fff">Horizon Technologies</div>
+<div class="copy"><span id="y"></span> © <span id="n">horizontechie</span> <span class="dot"></span> <span id="d"></span> <span class="dot"></span></div>
+</div>
+</footer>
+
+<script>
+const y=document.getElementById('y'), d=document.getElementById('d');
+function upd(){const now=new Date();y.textContent=now.getFullYear();d.textContent=now.toLocaleDateString(undefined,{weekday:'short',year:'numeric',month:'short',day:'numeric'});}
+upd();setInterval(upd,60000);
+</script>
+</body>
+  </html>
+                                    
