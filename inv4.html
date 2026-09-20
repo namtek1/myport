@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horizon Technologies - Invoice</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#2563EB;--blue-dark:#1D4ED8;--purple:#6D28D9;--bg:#F6F7FF;--white:#fff;--border:#E5E7FF;--text:#111827;--muted:#6B7280}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:var(--bg);color:var(--text);line-height:1.5}
+.navbar{background:var(--white);border-bottom:1px solid var(--border);padding:26px 20px;display:flex;justify-content:center;text-align:center;position:sticky;top:0;z-index:10}
+.brand h1{font-size:28px;font-weight:800;color:var(--blue)}
+.brand p{font-size:13px;color:var(--muted);margin-top:5px;font-weight:500}
+.container{max-width:1120px;margin:26px auto;padding:0 16px;display:grid;grid-template-columns:1fr 340px;gap:20px}
+@media(max-width:900px){.container{grid-template-columns:1fr}}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 4px 16px rgba(37,99,235,.06)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.badge{background:#EFF6FF;color:var(--blue);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+label{font-size:12px;font-weight:600;color:#374151;margin-bottom:6px;display:block}
+input,textarea,select{width:100%;padding:12px 14px;border:1px solid #E5E7EB;border-radius:10px;font-size:14px;outline:none;background:#fff}
+input:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #DBEAFE}
+table{width:100%;border-collapse:collapse;margin-top:8px}
+th{font-size:11px;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px 8px;border-bottom:1px solid var(--border)}
+td{padding:10px 8px;border-bottom:1px solid #F3F4F6;font-size:14px}
+.btn{padding:13px 18px;border-radius:12px;font-weight:700;font-size:14px;border:none;cursor:pointer;transition:all.2s ease;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:active{transform:scale(.96)}
+.btn-purple{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;box-shadow:0 6px 16px rgba(37,99,235,.28)}
+.btn-purple:hover{transform:translateY(-2px)}
+.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:var(--blue-dark);transform:translateY(-2px)}
+.btn-green{background:#10B981;color:#fff}.btn-green:hover{background:#059669;transform:translateY(-2px)}
+.btn-white{background:var(--white);border:1px solid var(--border)}
+.footer{margin-top:36px;background:var(--white);border-top:1px solid var(--border);padding:32px 20px;text-align:center}
+.footer h3{font-size:18px;font-weight:800;color:var(--blue)}
+.footer p{font-size:13px;color:var(--muted);max-width:640px;margin:6px auto}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;display:none;z-index:99}
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.action-grid{grid-template-columns:1fr}.btn{width:100%}}
+</style>
+</head>
+<body>
+<div class="navbar"><div class="brand"><h1>Horizon Technologies</h1><p>0794939065 • horintechie@gmail.com • Nairobi, Kenya</p></div></div>
+<div class="container">
+<div class="main">
+<div class="card"><div class="card-title">Customer Details <span class="badge">Required</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div><label>Customer Name *</label><input id="custName" placeholder="e.g. John Kamau" oninput="updatePreview()"></div>
+<div><label>Customer Email</label><input id="custEmail" type="email" placeholder="client@email.com"></div>
+<div><label>Phone / WhatsApp</label><input id="custPhone" placeholder="07XXXXXXXX"></div>
+<div><label>Date of Invoicing *</label><input type="date" id="invDate"></div>
+<div style="grid-column:1/-1"><label>Billing Address</label><textarea id="custAddr" rows="2"></textarea></div>
+</div></div>
+<div class="card" style="margin-top:16px"><div class="card-title">Invoice Items <span id="invNum" style="color:var(--blue);font-weight:800">INV-2026-001</span></div>
+<table><thead><tr><th style="width:40%">Item</th><th>Qty</th><th>Price (KES)</th><th>Amount</th><th></th></tr></thead><tbody id="itemsBody"></tbody></table>
+<span style="color:var(--blue);font-weight:700;cursor:pointer;margin-top:10px;display:inline-flex" onclick="addItem()">+ Add Item</span>
+<div style="margin-top:14px;display:flex;flex-direction:column;gap:8px;align-items:flex-end"><div style="display:flex;justify-content:space-between;width:280px"><span>Subtotal</span><span id="subTotal">KES 0</span></div><div style="display:flex;justify-content:space-between;width:280px"><span>Tax <input id="taxRate" type="number" value="16" style="width:58px;display:inline;padding:6px" oninput="calc()"> %</span><span id="taxAmt">KES 0</span></div><div style="display:flex;justify-content:space-between;width:280px;font-weight:800;font-size:19px;color:var(--blue);border-top:2px solid var(--border);padding-top:10px"><span>Total Due</span><span id="grandTotal">KES 0</span></div></div>
+<div style="margin-top:18px;background:#FFFBEB;border:1px dashed #F59E0B;border-radius:12px;padding:14px"><label>Optional Note — visible to client</label><textarea id="invNote" rows="3"></textarea></div>
+<div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px"><div><label>Payment Method</label><select id="payMethod"><option>M-Pesa</option><option>Bank Transfer</option><option>Cash</option></select></div><div><label>Due Date</label><input type="date" id="dueDate"></div></div>
+</div></div>
+<div class="side">
+<div style="background:linear-gradient(135deg,#2563EB,#6D28D9);border-radius:14px;padding:18px;color:white"><h4 style="font-size:12px;opacity:.85">TOTAL AMOUNT DUE</h4><div style="font-size:30px;font-weight:800;margin-top:4px" id="previewTotal">KES 0.00</div><div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.25);font-size:13px" id="previewCustomer">No customer</div></div>
+<div class="card" style="margin-top:16px"><div class="card-title">Send & Save</div><div style="display:flex;flex-direction:column;gap:12px"><button class="btn btn-purple" onclick="generatePDF()" style="width:100%">📄 Download PDF</button><div class="action-grid"><button class="btn btn-green" onclick="sendWhatsApp()">💬 WhatsApp + PDF</button><button class="btn btn-blue" onclick="sendEmail()">✉️ Email + PDF</button></div><button class="btn btn-white" onclick="window.print()" style="width:100%">🖨️ Print</button></div></div>
+</div></div>
+<div class="footer"><h3>Horizon Technologies</h3><p>0794939065 • horintechie@gmail.com • <a href="https://horizontec.vercel.app" target="_blank" style="color:var(--blue);font-weight:700;text-decoration:none">horizontec.vercel.app</a><br>Professional IT Solutions — Web, Hosting, Branding & Support</p><div style="margin-top:8px;font-size:11px;color:#9CA3AF">© <span id="year"></span> HT</div></div>
+<div id="toast" class="toast"></div>
+<script>
+document.getElementById('year').textContent=new Date().getFullYear();
+document.getElementById('invDate').valueAsDate=new Date();
+let d=new Date(); d.setDate(d.getDate()+7); document.getElementById('dueDate').valueAsDate=d;
+const invNum='INV-'+new Date().getFullYear()+'-'+String(Math.floor(Math.random()*900)+100);
+document.getElementById('invNum').innerText=invNum;
+let items=[{name:'Website Design',qty:1,price:25000},{name:'Hosting',qty:1,price:3000}];
+function render(){const tbody=document.getElementById('itemsBody');tbody.innerHTML='';items.forEach((it,i)=>{tbody.innerHTML+=`<tr><td><input value="${it.name}" oninput="items[${i}].name=this.value"></td><td><input type="number" min="1" value="${it.qty}" oninput="items[${i}].qty=parseFloat(this.value)||0;calc()"></td><td><input type="number" value="${it.price}" oninput="items[${i}].price=parseFloat(this.value)||0;calc()"></td><td><strong>KES ${(it.qty*it.price).toLocaleString()}</strong></td><td><span style="color:#EF4444;cursor:pointer" onclick="removeItem(${i})">✕</span></td></tr>`});calc()}
+function addItem(){items.push({name:'',qty:1,price:0});render()}
+function removeItem(i){items.splice(i,1);if(items.length==0)addItem();else render()}
+function calc(){let sub=items.reduce((s,it)=>s+(it.qty*it.price),0);let taxRate=parseFloat(document.getElementById('taxRate').value)||0;let tax=sub*taxRate/100;let total=sub+tax;document.getElementById('subTotal').innerText='KES '+sub.toLocaleString();document.getElementById('taxAmt').innerText='KES '+tax.toLocaleString();document.getElementById('grandTotal').innerText='KES '+total.toLocaleString();document.getElementById('previewTotal').innerText='KES '+total.toLocaleString();updatePreview()}
+function updatePreview(){const name=document.getElementById('custName').value||'No customer';const date=document.getElementById('invDate').value||'No date';const due=document.getElementById('dueDate').value||'';const email=document.getElementById('custEmail').value||'';document.getElementById('previewCustomer').innerHTML=`<strong>${name}</strong><br>${email}<br><br>📅 Invoice: ${date}<br>⏰ Due: ${due||'N/A'}<br># ${document.getElementById('invNum').innerText}`}
+function showToast(m){const t=document.getElementById('toast');t.innerText=m;t.style.display='block';setTimeout(()=>t.style.display='none',4000)}
+function buildDoc(){
+  const {jsPDF}=window.jspdf; const doc=new jsPDF();
+  const custName=document.getElementById('custName').value||'Customer';
+  const custEmail=document.getElementById('custEmail').value||''; const custPhone=document.getElementById('custPhone').value||''; const custAddr=document.getElementById('custAddr').value||'';
+  const invDate=document.getElementById('invDate').value||new Date().toISOString().split('T')[0];
+  const dueDate=document.getElementById('dueDate').value||'N/A'; const payMethod=document.getElementById('payMethod').value;
+  const noteVal=document.getElementById('invNote').value.trim();
+  doc.setFillColor(37,99,235);doc.rect(0,0,210,42,'F');
+  doc.setTextColor(255,255,255);doc.setFontSize(20);doc.setFont('helvetica','bold');doc.text('Horizon Technologies',105,16,{align:'center'});
+  doc.setFontSize(10);doc.setFont('helvetica','normal');doc.text('0794939065 | horizontechie@gmail.com | horizontec.vercel.app',105,24,{align:'center'});
+  doc.setFontSize(13);doc.setFont('helvetica','bold');doc.text('INVOICE '+document.getElementById('invNum').innerText,105,33,{align:'center'});
+  doc.setTextColor(20,20,20);doc.setFontSize(10);doc.setFont('helvetica','normal');doc.text('Invoice Date: '+invDate+' | Due Date: '+dueDate+' | Payment: '+payMethod,14,50);
+  doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text('Bill To:',14,58);
+  doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text(custName,14,64);
+  if(custEmail)doc.text(custEmail,14,69);if(custPhone)doc.text(custPhone,14,74);
+  if(custAddr){const a=doc.splitTextToSize(custAddr,180);doc.text(a,14,79)}
+  const rows=items.map(it=>[it.name,it.qty,'KES '+it.price.toLocaleString(),'KES '+(it.qty*it.price).toLocaleString()]);
+  doc.autoTable({startY:90,head:[['Item','Qty','Price','Amount']],body:rows,headStyles:{fillColor:[37,99,235]},styles:{fontSize:10},theme:'striped'});
+  let sub=items.reduce((s,it)=>s+(it.qty*it.price),0);let taxRate=parseFloat(document.getElementById('taxRate').value)||0;let tax=sub*taxRate/100;let total=sub+tax;
+  let finalY=doc.lastAutoTable.finalY+10;
+  doc.setFontSize(11);doc.setTextColor(20,20,20);doc.text('Subtotal: KES '+sub.toLocaleString(),130,finalY);doc.text('Tax ('+taxRate+'%): KES '+tax.toLocaleString(),130,finalY+7);
+  doc.setFont('helvetica','bold');doc.setTextColor(37,99,235);doc.text('Total Due: KES '+total.toLocaleString(),130,finalY+16);
+  if(noteVal){doc.setTextColor(20,20,20);doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text('Note:',14,finalY+26);doc.setFont('helvetica','normal');doc.setFontSize(10);const splitNote=doc.splitTextToSize(noteVal,180);doc.text(splitNote,14,finalY+32)}
+  doc.setTextColor(100,100,100);doc.setFontSize(8);doc.text('Thank you | Visit: horizontec.vercel.app | 0794939065 | horizontechie@gmail.com',105,285,{align:'center'});
+  return {doc,custName,total,invDate,dueDate,payMethod};
+}
+function generatePDF(){const {doc,custName}=buildDoc();doc.save(`${document.getElementById('invNum').innerText}_${custName}.pdf`)}
+
+// WHATSAPP: Share PDF file via system share (mobile) -> fallback download + open WhatsApp
+async function sendWhatsApp(){
+  const {doc,custName,total,invDate,dueDate,payMethod}=buildDoc();
+  const name=document.getElementById('custName').value||'Customer';
+  const phone=document.getElementById('custPhone').value.replace(/\D/g,'');
+  const inv=document.getElementById('invNum').innerText;
+  const noteRaw=document.getElementById('invNote').value.trim();
+  const blob=doc.output('blob'); const fileName=`${inv}_${custName}.pdf`; const file=new File([blob],fileName,{type:'application/pdf'});
+  const text=`Hello ${name}, This is Horizon Technologies. Invoice ${inv} Date: ${invDate} Due: ${dueDate} Total: KES ${total.toLocaleString()} Payment: ${payMethod}${noteRaw?' Note: '+noteRaw:''} Website: horizontec.vercel.app`;
+  try{if(navigator.canShare && navigator.canShare({files:[file]})){await navigator.share({files:[file],title:`Invoice ${inv}`,text:text});return;}}catch(e){}
+  doc.save(fileName); showToast('PDF downloaded — opening WhatsApp, please attach PDF');
+  setTimeout(()=>{let url=`https://wa.me/${phone}?text=${encodeURIComponent(text)}`; if(!phone) url=`https://wa.me/?text=${encodeURIComponent(text)}`; window.open(url,'_blank');},800);
+}
+
+// EMAIL: Now different from WhatsApp — always downloads PDF + opens email client with website link
+function sendEmail(){
+  const {doc,custName,total,invDate,dueDate,payMethod}=buildDoc();
+  const name=document.getElementById('custName').value||'Customer';
+  const email=document.getElementById('custEmail').value||'';
+  const inv=document.getElementById('invNum').innerText;
+  const noteRaw=document.getElementById('invNote').value.trim();
+  const fileName=`${inv}_${custName}.pdf`;
+
+  // 1. Auto-download PDF immediately
+  doc.save(fileName);
+
+  // 2. Prepare email with website link as requested
+  const subject=`Invoice ${inv} from Horizon Technologies - ${invDate}`;
+  const body=`Hello ${name},
+
+Your invoice from Horizon Technologies is ready.
+
+Invoice Number: ${inv}
+Invoice Date: ${invDate}
+Due Date: ${dueDate}
+Total Amount Due: KES ${total.toLocaleString()}
+Payment Method: ${payMethod}
+${noteRaw?`Note: ${noteRaw}\n\n`:''}I have attached your PDF invoice (${fileName}) to this email.
+
+Please let me know if you have any questions.
+
+Feel free to visit our website at https://horizontec.vercel.app to explore our services, see our latest work, or get in touch with us.
+
+Warm regards,
+Horizon Technologies
+Phone: 0794939065
+Email: horintechie@gmail.com
+Website: https://horizontec.vercel.app
+Location: Nairobi, Kenya
+
+Thank you for choosing Horizon Technologies!`;
+
+  showToast('PDF downloaded. Opening your email app — please attach the PDF file.');
+
+  // 3. Open email client after short delay so download starts first
+  setTimeout(()=>{
+    const mailtoLink=`mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href=mailtoLink;
+  },900);
+}
+render();updatePreview();
+</script>
+</body>
+</html>
